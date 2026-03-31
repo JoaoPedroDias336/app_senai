@@ -1,76 +1,113 @@
 import flet
-from flet import ThemeMode, Text, TextField, OutlinedButton, Column, CrossAxisAlignment, ElevatedButton
+from flet import ThemeMode, Text, TextField, OutlinedButton, Column, CrossAxisAlignment, Container, Colors, FontWeight, \
+    Alignment, Event, ElevatedButton
 from flet.controls.border_radius import horizontal
 from datetime import datetime
-from datetime import date
 
 
-def main(page: flet.Page, input_numero=None):
-    # Configurações
-    page.title = "Primeiro APP"
+def main(page: flet.Page):
+    # CONFIGURAÇÕES
+    page.title = "Primeira APP"
     page.theme_mode = ThemeMode.DARK
     page.window.width = 400
     page.window.height = 700
 
-    # Funções
+    # FUNÇÕES
+    def nome():
+        text.value = f"Bom Dia {input_nome.value} {input_sobrenome.value}"
+        page.update()
 
-    def salvar_nome():
-        text.value = f"Bom dia {input_nome.value} {input_sobrenome.value}"
-
-    def verficar_par_impar():
-        numero = int(input_numero.value)
-        if numero % 2 == 0:
-            text_par_impar.text = f" O {numero} é impar"
+    def numero():
+        n1 = int(input_numero.value)
+        if n1 % 2 == 0:
+            text_numero.value = f"O número {n1} é par"
+            page.update()
         else:
-            text_par_impar.text = f" O {numero} é par"
+            text.value = f"O número {n1} é impar"
+            page.update()
 
-    def calcular_idade():
-        ano_nascimento = int(input_idade.value)
-        idade = datetime.now().year - ano_nascimento
-
+    def nascimento():
+        verif_idade = int(input_nascimento.value)
+        idade = datetime.now().year - verif_idade
         if idade >= 18:
-            text.value = f"voce tem {idade} anos e é maior de idade"
+            text_nascimento.value = f"É maior de idade, a idade é {idade} anos"
             page.update()
         else:
-            text.value = f"voce tem {idade} anos e é menor de idade"
+            text_nascimento.value = f"É menor de idade,  a idade é {idade} anos"
             page.update()
 
-    # Componentes
-    text = Text()
-    text_par_impar = Text()
+    # COMPONENTES
+    text = Text(" ")
     input_nome = TextField(label="Nome")
     input_sobrenome = TextField(label="Sobrenome")
-    input_numero = TextField(label="Digite um numero", hint_text="Verficar se é par ou impar ")
-    btn_salvar = OutlinedButton("Salvar", on_click=salvar_nome)
-    btn_verificar = OutlinedButton("Verificar", on_click=verficar_par_impar)
-    input_idade = TextField(label="Digite seu ano de nascimento")
-    btn_calcular = OutlinedButton("Verificar", on_click=calcular_idade)
+    btn_salvar = ElevatedButton("Salvar", on_click=nome)
 
-    # Construção da tela
+    text_numero = Text(" ")
+    input_numero = TextField(label="Digite um número", hint_text="Verifique se é par ou ímpar")
+    btn_salvar_dois = ElevatedButton("Verificar", on_click=numero)
 
+    text_nascimento = Text(" ")
+    input_nascimento = TextField(label="Digite o ano de nascimento", hint_text="Ex: 2009")
+    btn_salvar_tres = ElevatedButton("Salvar", on_click=nascimento)
+
+    # CONSTRUÇÃO DA TELA
     page.add(
         Column(
             [
-            input_nome,
-            input_sobrenome,
-            btn_salvar,
-            text,
-            input_numero,
-            text_par_impar,
-            btn_verificar,
-            input_idade,
-            btn_calcular
+                Container(
+                    Column(
+                        [
+                            Text("Atividade 1", weight=FontWeight.BOLD, size=18),
+                            text,
+                            input_nome,
+                            input_sobrenome,
+                            btn_salvar,
+                        ],
+                        horizontal_alignment=CrossAxisAlignment.CENTER,
+                    ),
+                    bgcolor=Colors.BLUE_800,
+                    padding=10,
+                    border_radius=5,
+                    width=400
+                ),
+
+                Container(
+                    Column(
+                        [
+                            Text("Atividade 2", weight=FontWeight.BOLD, size=18),
+                            text_numero,
+                            input_numero,
+                            btn_salvar_dois,
+                        ],
+                        horizontal_alignment=CrossAxisAlignment.CENTER,
+                    ),
+                    bgcolor=Colors.BLUE_500,
+                    padding=10,
+                    border_radius=5,
+                    width=400
+                ),
+
+                Container(
+                    Column(
+                        [
+                            Text("Atividade 3", weight=FontWeight.BOLD, size=18),
+                            text_nascimento,
+                            input_nascimento,
+                            btn_salvar_tres
+                        ],
+                        horizontal_alignment=CrossAxisAlignment.CENTER,
+                    ),
+                    bgcolor=Colors.BLUE_300,
+                    padding=10,
+                    border_radius=5,
+                    width=400
+                ),
+
             ],
-            width = 400,
-            horizontal_alignment = CrossAxisAlignment.CENTER
+            width=400,
+            horizontal_alignment=CrossAxisAlignment.CENTER
         )
     )
 
 
-
-
 flet.run(main)
-
-
-
-
